@@ -30,6 +30,7 @@ libpcap/libpcap.a:
 
 ## Build the GO binary within a Docker container
 release:
+    ## 通过docker来编译
 	docker run \
 		--rm \
 		--workdir /pwru \
@@ -78,7 +79,8 @@ help:
 	@echo '  ${YELLOW}make${RESET} ${GREEN}<target>${RESET}'
 	@echo ''
 	@echo 'Targets:'
-
+	## awk 'patternA { actionA } patternB {actionB} {actionC} {actionD}' file
+    ## awk的用法
 	@awk '/^[a-zA-Z\-\_0-9]+:/ { \
 		helpMessage = match(lastLine, /^## (.*)/); \
 		if (helpMessage) { \

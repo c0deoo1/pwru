@@ -142,6 +142,7 @@ filter_pcap_ebpf_l3(void *_skb, void *__skb, void *___skb, void *data, void* dat
 	return data != data_end && _skb == __skb && __skb == ___skb;
 }
 
+// 通过BPF_CORE_READ等宏可以生成CoRE类型的BTF，非常方便
 static __always_inline bool
 filter_pcap_l3(struct sk_buff *skb)
 {
@@ -264,6 +265,7 @@ set_output(void *ctx, struct sk_buff *skb, struct event_t *event) {
 	}
 
 	if (cfg->output_stack) {
+	    // 如果需要输出stack，则获取stack信息
 		event->print_stack_id = bpf_get_stackid(ctx, &print_stack_map, BPF_F_FAST_STACK_CMP);
 	}
 }
@@ -274,11 +276,12 @@ handle_everything(struct sk_buff *skb, void *ctx, struct event_t *event) {
 	u64 skb_addr = (u64) skb;
 
 	if (cfg->is_set) {
+	    // 如果skb的地址已经存在于map中了，就直接跟踪
 		if (cfg->track_skb && bpf_map_lookup_elem(&skb_addresses, &skb_addr)) {
 			tracked = true;
 			goto cont;
 		}
-
+        // 根据用户提供的pcap来过滤
 		if (!filter(skb)) {
 			return false;
 		}

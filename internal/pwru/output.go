@@ -132,6 +132,7 @@ func (o *output) Print(event *Event) {
 		funcName = fmt.Sprintf("0x%x", addr)
 	}
 
+	// 对于BPF程序的文件名做一些特殊处理
 	if strings.HasPrefix(funcName, "bpf_prog_") && strings.HasSuffix(funcName, "[bpf]") {
 		// The name of bpf prog is "bpf_prog_<id>_<name>  [bpf]". We want to
 		// print only the name.
@@ -178,6 +179,7 @@ func (o *output) Print(event *Event) {
 		if err := o.printStackMap.Lookup(&id, &stack); err == nil {
 			for _, ip := range stack.IPs {
 				if ip > 0 {
+					// 找的IP所归属的函数
 					fmt.Fprintf(o.writer, "\n%s", o.addr2name.findNearestSym(ip))
 				}
 			}
@@ -251,6 +253,7 @@ func getKFreeSKBReasons(spec *btf.Spec) (map[uint64]string, error) {
 	return ret, nil
 }
 
+// 找到本机所有的网络命名空间，然后切入到该命名空间下，拿到该命名空间下的网络接口列表
 func getIfaces() (map[uint64]map[uint32]string, error) {
 	var err error
 	procPath := "/proc"

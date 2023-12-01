@@ -7,4 +7,5 @@
 //go:generate go run github.com/cilium/ebpf/cmd/bpf2go -target $TARGET_GOARCH -cc clang -no-strip KProbePWRUWithoutOutputSKB ./bpf/kprobe_pwru.c -- -I./bpf/headers -Wno-address-of-packed-member
 //go:generate go run github.com/cilium/ebpf/cmd/bpf2go -target $TARGET_GOARCH -cc clang -no-strip KProbeMultiPWRUWithoutOutputSKB ./bpf/kprobe_pwru.c -- -D HAS_KPROBE_MULTI -I./bpf/headers -Wno-address-of-packed-member
 
+// go genereate来编译bpf
 package main

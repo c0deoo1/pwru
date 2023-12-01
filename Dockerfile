@@ -1,7 +1,7 @@
 FROM ubuntu:22.04 AS build
 
 ENV PATH $PATH:/usr/local/go/bin
-
+# 编译基础镜像和运行基础容器
 RUN apt update -y -q && \
     DEBIAN_FRONTEND=noninteractive apt install --no-install-recommends -y -q \
         curl \
